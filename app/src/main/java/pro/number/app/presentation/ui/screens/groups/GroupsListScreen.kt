@@ -21,19 +21,24 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import pro.number.app.presentation.ViewModelFactory
 import pro.number.app.presentation.ui.components.GroupItem
 import pro.number.app.presentation.ui.theme.AppTheme
 
 @Composable
 fun GroupsListScreen(
-    viewModel: GroupsViewModel
+    viewModelFactory: ViewModelFactory
 ) {
+    val viewModel = remember(Unit) {
+        viewModelFactory.create(GroupsViewModel::class.java)
+    }
     val groups = viewModel.groups.collectAsState()
 
     Scaffold(
@@ -89,7 +94,9 @@ fun GroupsListScreen(
 @Composable
 private fun PreviewGroupsListScreen() {
     AppTheme {
-        GroupsListScreen(GroupsViewModel())
+        GroupsListScreen(
+            ViewModelFactory.createForPreview(GroupsViewModel())
+        )
     }
 }
 
