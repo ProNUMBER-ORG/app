@@ -44,6 +44,9 @@ dependencies {
     implementation(project(path=":domain"))
     implementation(project(path=":data"))
 
+    implementation(libs.dagger)
+    ksp(libs.dagger.compiler)
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
