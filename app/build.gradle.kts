@@ -40,6 +40,8 @@ android {
 }
 
 dependencies {
+    implementation(project(path=":domain"))
+    implementation(project(path=":data"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
