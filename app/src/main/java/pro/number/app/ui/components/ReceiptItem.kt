@@ -20,7 +20,7 @@ import androidx.compose.ui.unit.sp
 import pro.number.app.ui.theme.AppTheme
 
 @Composable
-fun PositionItem(
+fun ReceiptItem(
     modifier: Modifier = Modifier,
     productName: String,
     total: Int,
@@ -50,9 +50,9 @@ fun PositionItem(
 
 @Preview
 @Composable
-private fun PreviewPositionItem() {
+private fun PreviewReceiptItem() {
     AppTheme {
-        PositionItem(
+        ReceiptItem(
             productName = "Салат ‘Каприз’",
             total = 1500
         ) { }
