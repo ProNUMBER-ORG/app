@@ -1,4 +1,4 @@
-package pro.number.app.ui.theme
+package pro.number.app.presentation.ui.theme
 import androidx.compose.ui.graphics.Color
 
 val primaryLight = Color(0xFF5D5E60)

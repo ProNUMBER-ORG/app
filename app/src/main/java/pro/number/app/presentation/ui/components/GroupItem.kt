@@ -1,4 +1,4 @@
-package pro.number.app.ui.components
+package pro.number.app.presentation.ui.components
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -17,7 +17,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import pro.number.app.ui.theme.AppTheme
+import pro.number.app.presentation.ui.theme.AppTheme
 
 @Composable
 fun GroupItem(

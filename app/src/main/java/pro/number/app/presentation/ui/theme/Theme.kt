@@ -1,4 +1,4 @@
-package pro.number.app.ui.theme
+package pro.number.app.presentation.ui.theme
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
