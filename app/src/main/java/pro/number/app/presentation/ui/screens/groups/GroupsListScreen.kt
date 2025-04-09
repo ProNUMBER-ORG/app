@@ -101,7 +101,7 @@ private fun PreviewGroupsListScreen() {
 }
 
 @Composable
-fun Header(
+private fun Header(
     modifier: Modifier = Modifier
 ) {
     Surface(

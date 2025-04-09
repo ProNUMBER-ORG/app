@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
+import pro.number.app.presentation.ui.screens.addgroup.AddGroupViewModel
 import pro.number.app.presentation.ui.screens.groups.GroupsViewModel
 
 @Module
@@ -13,5 +14,10 @@ interface ViewModelModule {
     @IntoMap
     @ViewModelKey(GroupsViewModel::class)
     fun bindGroupsViewModel(viewModel: GroupsViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(AddGroupViewModel::class)
+    fun bindAddGroupViewModel(viewModel: AddGroupViewModel): ViewModel
 
 }
