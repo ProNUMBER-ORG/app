@@ -1,12 +1,13 @@
 package pro.number.domain.repository
 
 import pro.number.domain.model.Group
+import kotlinx.coroutines.flow.Flow
 
 interface GroupRepository {
 
-    suspend fun getGroups(): List<Group>
+    fun getGroups(): Flow<List<Group>>
 
-    suspend fun getGroupById(id: Int): Group
+    fun getGroupById(id: Int): Flow<Group>
 
     suspend fun addGroup(group: Group)
 
