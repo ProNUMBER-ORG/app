@@ -3,10 +3,10 @@ package pro.number.app.presentation.ui.screens.addgroup
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.gestures.detectTapGestures
-import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
@@ -51,12 +51,13 @@ import pro.number.app.R
 import pro.number.app.presentation.ViewModelFactory
 import pro.number.app.presentation.ui.components.Header
 import pro.number.app.presentation.ui.theme.AppTheme
+import pro.number.domain.model.Participant
 
 @Composable
 fun AddGroupScreen(
-    viewModelFactory: ViewModelFactory
+    viewModelFactory: ViewModelFactory,
+    onBackClickListener: () -> Unit
 ) {
-
     val viewModel = remember(Unit) {
         viewModelFactory.create(AddGroupViewModel::class.java)
     }
@@ -67,21 +68,19 @@ fun AddGroupScreen(
         topBar = {
             Header(
                 title = "Новая группа",
-                onBackClickListener = {
-                    TODO("Действие при нажатии на кнопку возврата")
-                }
+                onBackClickListener = onBackClickListener
             )
         }
-    ) {
+    ) { paddingValues ->
         Column(
             modifier = Modifier
-                .fillMaxHeight()
-                .padding(it)
-                .padding(horizontal = 25.dp),
-            verticalArrangement = Arrangement.SpaceBetween,
+                .fillMaxSize()
+                .padding(paddingValues)
+                .padding(horizontal = 25.dp)
         ) {
             TextButton(
-                onClick = { TODO("Клик на кнопку для добавления участников") }) {
+                onClick = { TODO("Клик на кнопку для добавления участников") }
+            ) {
                 Icon(
                     imageVector = Icons.Filled.AddCircle,
                     contentDescription = null,
@@ -95,54 +94,71 @@ fun AddGroupScreen(
                     color = MaterialTheme.colorScheme.tertiary
                 )
             }
-            LazyVerticalGrid(columns = GridCells.Fixed(3)) {
-                items(participants.value, key = { it.id }) {
-                    ParticipantChip(name = it.name) { TODO("Долгий клик на участника группы") }
-                }
-            }
-            Spacer(modifier = Modifier.height(10.dp))
-            Surface(
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            Box(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(25.dp),
-                color = MaterialTheme.colorScheme.surfaceContainerHighest,
-                shape = ShapeDefaults.Medium.copy(all = CornerSize(14.dp))
+                    .weight(1f)
             ) {
-                Column(
-                    horizontalAlignment = Alignment.CenterHorizontally
+                ParticipantChipsGrid(
+                    modifier = Modifier.fillMaxSize(),
+                    participants = participants.value,
+                    onLongClick = { TODO("Долгий клик на участника группы") }
+                )
+            }
+
+            Box(
+                modifier = Modifier
+                    .weight(1.5f)
+                    .fillMaxWidth(),
+                contentAlignment = Alignment.TopCenter
+            ) {
+                Surface(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 10.dp),
+                    color = MaterialTheme.colorScheme.surfaceContainer,
+                    shape = ShapeDefaults.Medium.copy(all = CornerSize(14.dp)),
                 ) {
-                    Image(
-                        modifier = Modifier.heightIn(max = 100.dp),
-                        painter = painterResource(id = R.drawable.receipt),
-                        contentDescription = null
-                    )
-                    Spacer(modifier = Modifier.height(10.dp))
-                    Text(
-                        text = "Добавить чек",
-                        fontSize = 17.sp,
-                        fontWeight = FontWeight.Bold
-                    )
-                    HorizontalDivider(modifier = Modifier.padding(top = 16.dp))
-                    TextButton(onClick = { TODO("Клик на кнопку сделать фото") }) {
-                        Text(
-                            text = "Сделать фото", fontSize = 17.sp,
-                            fontWeight = FontWeight.Medium,
-                            color = MaterialTheme.colorScheme.tertiary
+                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                        Image(
+                            modifier = Modifier.heightIn(max = 100.dp),
+                            painter = painterResource(id = R.drawable.receipt),
+                            contentDescription = null
                         )
-                    }
-                    HorizontalDivider()
-                    TextButton(onClick = { TODO("Клик на кнопку выбрать из галереи") }) {
+                        Spacer(modifier = Modifier.height(10.dp))
                         Text(
-                            text = "Выбрать из галереи", fontSize = 17.sp,
-                            fontWeight = FontWeight.Medium,
-                            color = MaterialTheme.colorScheme.tertiary
+                            text = "Добавить чек",
+                            fontSize = 17.sp,
+                            fontWeight = FontWeight.Bold
                         )
+                        HorizontalDivider(modifier = Modifier.padding(top = 16.dp))
+                        TextButton(onClick = { TODO("Клик на кнопку сделать фото") }) {
+                            Text(
+                                text = "Сделать фото",
+                                fontSize = 17.sp,
+                                fontWeight = FontWeight.Normal,
+                                color = MaterialTheme.colorScheme.tertiary
+                            )
+                        }
+                        HorizontalDivider()
+                        TextButton(onClick = { TODO("Клик на кнопку выбрать из галереи") }) {
+                            Text(
+                                text = "Выбрать из галереи",
+                                fontSize = 17.sp,
+                                fontWeight = FontWeight.Normal,
+                                color = MaterialTheme.colorScheme.tertiary
+                            )
+                        }
                     }
                 }
             }
+
             Button(
                 onClick = { TODO("Кнопка далее") },
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier
+                    .fillMaxWidth()
                     .padding(bottom = 62.dp),
                 colors = ButtonDefaults.buttonColors()
                     .copy(containerColor = MaterialTheme.colorScheme.tertiary)
@@ -191,7 +207,7 @@ fun GroupSearchBar(
 @Composable
 private fun AddGroupScreenPreview() {
     AppTheme {
-        AddGroupScreen(ViewModelFactory.createForPreview(AddGroupViewModel()))
+        AddGroupScreen(ViewModelFactory.createForPreview(AddGroupViewModel())) { }
     }
 }
 
@@ -226,12 +242,30 @@ fun ParticipantChip(
 
 @Preview
 @Composable
-private fun ParticipantChipPreview() {
+private fun ParticipantChipsGridPreview() {
     AppTheme {
-        LazyVerticalGrid(GridCells.Fixed(3)) {
-            items(10) {
-                ParticipantChip(name = "Петров В.") { }
-            }
+        val mockParticipants = List(10) {
+            Participant(it, name = "Петров. В")
+        }
+        ParticipantChipsGrid(
+            participants = mockParticipants,
+            onLongClick = { }
+        )
+    }
+}
+
+@Composable
+fun ParticipantChipsGrid(
+    modifier: Modifier = Modifier,
+    participants: List<Participant>,
+    onLongClick: (Participant) -> Unit
+) {
+    LazyVerticalGrid(modifier = modifier, columns = GridCells.Fixed(3)) {
+        items(participants, key = { it.id }) {
+            ParticipantChip(
+                name = it.name,
+                onLongClickListener = { onLongClick(it) }
+            )
         }
     }
 }
