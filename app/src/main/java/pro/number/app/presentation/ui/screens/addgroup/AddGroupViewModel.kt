@@ -4,8 +4,9 @@ import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import pro.number.domain.model.Participant
+import javax.inject.Inject
 
-class AddGroupViewModel : ViewModel() {
+class AddGroupViewModel @Inject constructor(): ViewModel() {
 
     private val _participants = MutableStateFlow<List<Participant>>(emptyList())
     val participants
