@@ -13,4 +13,5 @@ kotlin {
 }
 dependencies {
     implementation(libs.dagger)
+    implementation(libs.kotlinx.coroutines.core)
 }
