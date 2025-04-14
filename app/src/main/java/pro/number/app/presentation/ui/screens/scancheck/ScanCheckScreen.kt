@@ -2,7 +2,6 @@ package pro.number.app.presentation.ui.screens.scancheck
 
 import android.graphics.Bitmap
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -26,7 +25,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.geometry.CornerRadius
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.PathEffect
 import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -37,7 +41,6 @@ import androidx.core.graphics.createBitmap
 import pro.number.app.R
 import pro.number.app.presentation.ViewModelFactory
 import pro.number.app.presentation.ui.components.Header
-import pro.number.app.presentation.ui.screens.groups.GroupsViewModel
 import pro.number.app.presentation.ui.theme.AppTheme
 
 @Composable
@@ -103,48 +106,59 @@ fun ScanCheckScreen(
 private fun ScanCheckScreenPreview() {
     AppTheme {
         val testBitmap: Bitmap = createBitmap(100, 100)
-        ScanCheckScreen(ViewModelFactory.createForPreview(GroupsViewModel()), testBitmap) { }
+        ScanCheckScreen(ViewModelFactory.createForPreview(ScanCheckScreenViewModel()), testBitmap) { }
     }
 }
 
 @Composable
-fun ReceiptCard(
+private fun ReceiptCard(
     modifier: Modifier = Modifier,
     image: Bitmap? = null
 ) {
+    val stroke = Stroke(
+        width = 7f,
+        pathEffect = PathEffect.dashPathEffect(floatArrayOf(10f, 10f), 0f)
+    )
     Box(
         modifier = modifier
             .fillMaxWidth()
-            .border(
-                width = 3.dp,
-                color = MaterialTheme.colorScheme.tertiary,
-                shape = RoundedCornerShape(20.dp),
-            )
-            .clip(RoundedCornerShape(20.dp))
+            .drawBehind {
+                drawRoundRect(
+                    color = Color.Red,
+                    style = stroke,
+                    cornerRadius = CornerRadius(20.dp.toPx()),
+                )
+            }
     ) {
-        if (image != null) {
-            Image(
-                modifier = Modifier.fillMaxWidth(),
-                bitmap = image.asImageBitmap(),
-                contentDescription = null,
-                contentScale = ContentScale.Crop
-            )
-        } else {
-            Image(
-                modifier = Modifier.fillMaxWidth(),
-                painter = painterResource(R.drawable.placeholder_check),
-                contentDescription = null,
-                contentScale = ContentScale.Crop
-            )
-        }
+        ClipRoundedImage(image = image)
+    }
+}
+
+@Composable
+private fun ClipRoundedImage(modifier: Modifier = Modifier, image: Bitmap?) {
+    if (image != null) {
+        Image(
+            modifier = modifier.fillMaxWidth(),
+            bitmap = image.asImageBitmap(),
+            contentDescription = null,
+            contentScale = ContentScale.Crop
+        )
+    } else {
+        Image(
+            modifier = modifier.fillMaxWidth()
+                .clip(RoundedCornerShape(20.dp)),
+            painter = painterResource(R.drawable.placeholder_check),
+            contentDescription = null,
+            contentScale = ContentScale.Crop
+        )
     }
 }
 
 @Preview(showBackground = true)
 @Composable
-fun ReceiptCardPreview() {
+private fun ReceiptCardPreview() {
     AppTheme {
-        ReceiptCard()
+        ReceiptCard(modifier = Modifier.padding(20.dp))
     }
 
 }
