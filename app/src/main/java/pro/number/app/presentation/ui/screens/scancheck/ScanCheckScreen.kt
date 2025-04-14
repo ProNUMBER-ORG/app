@@ -119,12 +119,14 @@ private fun ReceiptCard(
         width = 7f,
         pathEffect = PathEffect.dashPathEffect(floatArrayOf(10f, 10f), 0f)
     )
+    val borderColor = MaterialTheme.colorScheme.tertiary
+
     Box(
         modifier = modifier
             .fillMaxWidth()
             .drawBehind {
                 drawRoundRect(
-                    color = Color.Red,
+                    color = borderColor,
                     style = stroke,
                     cornerRadius = CornerRadius(20.dp.toPx()),
                 )
