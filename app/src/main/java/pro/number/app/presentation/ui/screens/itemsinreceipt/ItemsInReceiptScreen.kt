@@ -17,7 +17,7 @@ import pro.number.app.presentation.ui.components.ReceiptItem
 @Composable
 fun ItemsInReceiptScreen(
     viewModelFactory: ViewModelFactory,
-    groupId: Int,
+    groupId: Long,
     onBackClickListener: () -> Unit
 ) {
 
@@ -34,17 +34,18 @@ fun ItemsInReceiptScreen(
         viewModel.loadParticipants(groupId)
     }
 
-    Scaffold {
+    Scaffold(
+        topBar = {
+            Header(
+                title = "Позиция в чеке", onBackClickListener = onBackClickListener
+            )
+        }
+    ){
         LazyColumn(
             modifier = Modifier
                 .padding(it)
-                .padding(horizontal = 45.dp)
+                .padding(horizontal = 25.dp)
         ) {
-            item {
-                Header(
-                    title = "Позиция в чеке", onBackClickListener = onBackClickListener
-                )
-            }
             items(receiptItems.value) { receipt ->
                 ReceiptItem(
                     productName = receipt.productName,

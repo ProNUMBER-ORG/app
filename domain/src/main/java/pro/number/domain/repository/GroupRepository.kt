@@ -7,10 +7,10 @@ interface GroupRepository {
 
     fun getGroups(): Flow<List<Group>>
 
-    fun getGroupById(id: Int): Flow<Group>
+    fun getGroupById(id: Long): Flow<Group>
 
-    suspend fun addGroup(group: Group)
+    suspend fun addGroup(group: Group): Long
 
-    suspend fun deleteGroupById(id: Int)
+    suspend fun deleteGroupById(id: Long)
 
 }

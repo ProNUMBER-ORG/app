@@ -1,7 +1,5 @@
 package pro.number.app.presentation.ui.screens.scancheck
 
-import android.graphics.Bitmap
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -10,7 +8,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CornerSize
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.Button
@@ -24,29 +21,22 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.CornerRadius
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.PathEffect
-import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.drawscope.Stroke
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.core.graphics.createBitmap
-import pro.number.app.R
 import pro.number.app.presentation.ViewModelFactory
 import pro.number.app.presentation.ui.components.Header
-import pro.number.app.presentation.ui.theme.AppTheme
 
 @Composable
 fun ScanCheckScreen(
     viewModelFactory: ViewModelFactory,
-    image: Bitmap,
+    groupId: Long,
+    imageName: String,
+    onContinueClick: (groupId: Long) -> Unit,
     onBackClick: () -> Unit
 ) {
     val viewModel = remember(Unit) {
@@ -86,9 +76,9 @@ fun ScanCheckScreen(
                     fontWeight = FontWeight.Bold
                 )
             }
-            ReceiptCard(image = image)
+            ReceiptCard(imageName = imageName)
             Button(
-                onClick = { TODO("Кнопка далее") },
+                onClick = { onContinueClick(groupId) },
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(bottom = 62.dp),
@@ -101,19 +91,19 @@ fun ScanCheckScreen(
     }
 }
 
-@Preview
-@Composable
-private fun ScanCheckScreenPreview() {
-    AppTheme {
-        val testBitmap: Bitmap = createBitmap(100, 100)
-        ScanCheckScreen(ViewModelFactory.createForPreview(ScanCheckScreenViewModel()), testBitmap) { }
-    }
-}
+//@Preview
+//@Composable
+//private fun ScanCheckScreenPreview() {
+//    AppTheme {
+//        val testBitmap: Bitmap = createBitmap(100, 100)
+//        ScanCheckScreen(ViewModelFactory.createForPreview(ScanCheckScreenViewModel()), testBitmap) { }
+//    }
+//}
 
 @Composable
 private fun ReceiptCard(
     modifier: Modifier = Modifier,
-    image: Bitmap? = null
+    imageName: String
 ) {
     val stroke = Stroke(
         width = 7f,
@@ -132,35 +122,16 @@ private fun ReceiptCard(
                 )
             }
     ) {
-        ClipRoundedImage(image = image)
+        ClipRoundedImage(imageName = imageName)
     }
 }
 
 @Composable
-private fun ClipRoundedImage(modifier: Modifier = Modifier, image: Bitmap?) {
-    if (image != null) {
-        Image(
-            modifier = modifier.fillMaxWidth(),
-            bitmap = image.asImageBitmap(),
-            contentDescription = null,
-            contentScale = ContentScale.Crop
-        )
-    } else {
-        Image(
-            modifier = modifier.fillMaxWidth()
-                .clip(RoundedCornerShape(20.dp)),
-            painter = painterResource(R.drawable.placeholder_check),
-            contentDescription = null,
-            contentScale = ContentScale.Crop
-        )
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-private fun ReceiptCardPreview() {
-    AppTheme {
-        ReceiptCard(modifier = Modifier.padding(20.dp))
-    }
-
+private fun ClipRoundedImage(modifier: Modifier = Modifier, imageName: String) {
+//    Image(
+//        modifier = modifier.fillMaxWidth(),
+//        bitmap = imageUri.asImageBitmap(),
+//        contentDescription = null,
+//        contentScale = ContentScale.Crop
+//    )
 }

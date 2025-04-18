@@ -52,7 +52,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.serialization.generateRouteWithArgs
 import pro.number.app.R
 import pro.number.app.presentation.ViewModelFactory
 import pro.number.app.presentation.ui.components.Header
@@ -62,15 +61,18 @@ import pro.number.domain.model.Participant
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddGroupScreen(
+    groupId: Long,
     viewModelFactory: ViewModelFactory,
     onTakePhotoClickListener: () -> Unit,
     onPickFromGalleryClickListener: () -> Unit,
-    onContinueClickListener: (groupId: Int) -> Unit,
+    onContinueClickListener: (groupId: Long, imageName: String) -> Unit,
     onBackClickListener: () -> Unit
 ) {
     val viewModel = remember(Unit) {
         viewModelFactory.create(AddGroupViewModel::class.java)
     }
+
+    var isPhotoLoaded by remember { mutableStateOf(false) }
 
     var isBottomSheetIsVisible by remember { mutableStateOf(false) }
 
@@ -97,7 +99,7 @@ fun AddGroupScreen(
     Scaffold(
         topBar = {
             Header(
-                title = "Новая группа",
+                title = "Новая группа #$groupId",
                 onBackClickListener = onBackClickListener
             )
         }
@@ -188,14 +190,13 @@ fun AddGroupScreen(
             }
 
             Button(
-                onClick = {
-//                    onContinueClickListener(1)
-                },
+                onClick = { onContinueClickListener(groupId, "") },
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(bottom = 62.dp),
                 colors = ButtonDefaults.buttonColors()
-                    .copy(containerColor = MaterialTheme.colorScheme.tertiary)
+                    .copy(containerColor = MaterialTheme.colorScheme.tertiary),
+                enabled = isPhotoLoaded
             ) {
                 Text(text = "Далее", fontSize = 16.sp)
             }
@@ -242,10 +243,11 @@ fun GroupSearchBar(
 private fun AddGroupScreenPreview() {
     AppTheme {
         AddGroupScreen(
+            groupId = 1L,
             ViewModelFactory.createForPreview(AddGroupViewModel()),
             onTakePhotoClickListener = { },
             onPickFromGalleryClickListener = { },
-            onContinueClickListener = { },
+            onContinueClickListener = { _, _ -> },
             onBackClickListener = { }
         )
     }

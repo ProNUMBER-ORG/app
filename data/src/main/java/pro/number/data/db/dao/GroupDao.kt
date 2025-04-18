@@ -11,15 +11,15 @@ import pro.number.data.db.entity.GroupEntity
 internal interface GroupDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun addGroup(groupEntity: GroupEntity)
+    suspend fun addGroup(groupEntity: GroupEntity): Long
 
-    @Query("SELECT * FROM groups")
+    @Query("SELECT * FROM `groups`")
     fun getGroups() : Flow<List<GroupEntity>>
 
-    @Query("SELECT * FROM groups WHERE id = :id LIMIT 1")
-    fun getGroup(id: Int) : Flow<GroupEntity>
+    @Query("SELECT * FROM `groups` WHERE id = :id LIMIT 1")
+    fun getGroup(id: Long) : Flow<GroupEntity>
 
-    @Query("DELETE FROM groups WHERE id = :id")
-    suspend fun deleteGroup(id: Int)
+    @Query("DELETE FROM `groups` WHERE id = :id")
+    suspend fun deleteGroup(id: Long)
 
 }

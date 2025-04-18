@@ -6,7 +6,7 @@ import pro.number.domain.repository.GroupRepository
 import javax.inject.Inject
 
 class GetGroupByIdUseCase @Inject constructor(private val groupRepository: GroupRepository) {
-    operator fun invoke(id: Int): Flow<Group> {
+    operator fun invoke(id: Long): Flow<Group> {
         return groupRepository.getGroupById(id)
     }
 }
