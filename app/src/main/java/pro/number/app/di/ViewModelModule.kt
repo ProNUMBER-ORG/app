@@ -7,6 +7,7 @@ import dagger.multibindings.IntoMap
 import pro.number.app.presentation.ui.screens.addgroup.AddGroupViewModel
 import pro.number.app.presentation.ui.screens.groups.GroupsViewModel
 import pro.number.app.presentation.ui.screens.itemsinreceipt.ItemsInReceiptViewModel
+import pro.number.app.presentation.ui.screens.scancheck.ScanCheckScreenViewModel
 
 @Module
 interface ViewModelModule {
@@ -20,6 +21,11 @@ interface ViewModelModule {
     @IntoMap
     @ViewModelKey(AddGroupViewModel::class)
     fun bindAddGroupViewModel(viewModel: AddGroupViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(ScanCheckScreenViewModel::class)
+    fun bindScanCheckScreenViewModel(viewModel: ScanCheckScreenViewModel): ViewModel
 
     @Binds
     @IntoMap
