@@ -37,6 +37,8 @@ dependencies {
     implementation(project(path=":domain"))
 
     implementation(libs.dagger)
+    ksp(libs.dagger.compiler)
+
     implementation(libs.room)
     implementation(libs.room.ktx)
     ksp(libs.room.compiler)

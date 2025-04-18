@@ -2,6 +2,8 @@
 agp = "8.8.0"
 daggerCompiler = "2.56.1"
 kotlinxCoroutinesCore = "1.10.2"
+kotlinxSerializationJson = "1.8.0"
+navigationCompose = "2.8.9"
 roomVersion = "2.7.0"
 kotlin = "2.1.20"
 coreKtx = "1.15.0"
@@ -18,9 +20,11 @@ kspVersion = "2.1.20-1.0.32"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigationCompose" }
 dagger = { module = "com.google.dagger:dagger", version.ref = "daggerCompiler" }
 dagger-compiler = { module = "com.google.dagger:dagger-compiler", version.ref = "daggerCompiler" }
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinxCoroutinesCore" }
+kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinxSerializationJson" }
 room = { module = "androidx.room:room-runtime", version.ref = "roomVersion" }
 room-compiler = { module = "androidx.room:room-compiler", version.ref = "roomVersion" }
 room-ktx = { module = "androidx.room:room-ktx", version.ref = "roomVersion" }

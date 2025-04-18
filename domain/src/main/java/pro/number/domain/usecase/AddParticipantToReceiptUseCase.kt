@@ -8,8 +8,13 @@ class AddParticipantToReceiptUseCase @Inject constructor(
     private val repository: ReceiptRepository
 ) {
 
-    suspend operator fun invoke(participant: Participant, receiptId: Int, quantity: Int) {
-        repository.addParticipantToReceipt(receiptId, participant, quantity)
+    suspend operator fun invoke(participant: Participant, groupId: Long, receiptId: Int, quantity: Int) {
+        repository.addParticipantToReceipt(
+            groupId = groupId,
+            receiptId = receiptId,
+            participant = participant,
+            quantity = quantity
+        )
     }
 
 }

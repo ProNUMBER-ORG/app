@@ -5,11 +5,11 @@ import pro.number.domain.model.ReceiptItem
 import pro.number.domain.repository.ReceiptRepository
 import javax.inject.Inject
 
-class GetReceiptsUseCase @Inject constructor(
+class GetReceiptsByGroupIdUseCase @Inject constructor(
     private val repository: ReceiptRepository
 ) {
 
-    suspend operator fun invoke(groupId: Int): Flow<List<ReceiptItem>> =
+    suspend operator fun invoke(groupId: Long): Flow<List<ReceiptItem>> =
         repository.getReceipts(groupId)
 
 }

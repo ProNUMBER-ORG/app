@@ -6,7 +6,7 @@ import pro.number.domain.repository.GroupRepository
 import javax.inject.Inject
 
 class GetGroupsUseCase @Inject constructor(private val groupRepository: GroupRepository) {
-    operator fun invoke(group: Group): Flow<List<Group>> {
+    operator fun invoke(): Flow<List<Group>> {
         return groupRepository.getGroups()
     }
 }

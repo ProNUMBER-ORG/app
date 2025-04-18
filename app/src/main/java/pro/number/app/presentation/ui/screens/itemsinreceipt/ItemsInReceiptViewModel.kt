@@ -10,19 +10,19 @@ import pro.number.domain.model.ReceiptItem
 import pro.number.domain.usecase.AddParticipantToReceiptUseCase
 import pro.number.domain.usecase.DeleteParticipantFromReceiptItemUseCase
 import pro.number.domain.usecase.GetParticipantsByGroupIdUseCase
-import pro.number.domain.usecase.GetReceiptsUseCase
+import pro.number.domain.usecase.GetReceiptsByGroupIdUseCase
 import pro.number.domain.usecase.UpdateParticipantQuantityUseCase
 import javax.inject.Inject
 
 class ItemsInReceiptViewModel @Inject constructor(
-    private val getReceiptsUseCase: GetReceiptsUseCase,
+    private val getReceiptsByGroupIdUseCase: GetReceiptsByGroupIdUseCase,
     private val getParticipantsByGroupIdUseCase: GetParticipantsByGroupIdUseCase,
     private val addParticipantToReceiptUseCase: AddParticipantToReceiptUseCase,
     private val updateParticipantQuantityUseCase: UpdateParticipantQuantityUseCase,
     private val deleteParticipantFromReceiptItemUseCase: DeleteParticipantFromReceiptItemUseCase
 ) : ViewModel() {
 
-    private var currentGroupId: Int? = null
+    private var currentGroupId: Long? = null
 
     private val _receiptItems =
         MutableStateFlow<List<ReceiptItem>>(emptyList())
@@ -33,7 +33,7 @@ class ItemsInReceiptViewModel @Inject constructor(
     private val _availableParticipants = MutableStateFlow<List<Participant>>(emptyList())
     val availableParticipants = _availableParticipants.asStateFlow()
 
-    fun loadParticipants(groupId: Int) {
+    fun loadParticipants(groupId: Long) {
         viewModelScope.launch {
             getParticipantsByGroupIdUseCase(groupId).collect {
                 _availableParticipants.value = it
@@ -41,10 +41,10 @@ class ItemsInReceiptViewModel @Inject constructor(
         }
     }
 
-    fun fetchData(groupId: Int) {
+    fun fetchData(groupId: Long) {
         currentGroupId = groupId
         viewModelScope.launch {
-            getReceiptsUseCase(groupId).collect {
+            getReceiptsByGroupIdUseCase(groupId).collect {
                 _receiptItems.value = it
             }
         }
@@ -56,8 +56,17 @@ class ItemsInReceiptViewModel @Inject constructor(
         quantity: Int = MIN_QUANTITY
     ) {
         viewModelScope.launch {
-            addParticipantToReceiptUseCase(participant, receiptId, quantity)
-            currentGroupId?.let { fetchData(it) }
+            currentGroupId?.let {
+                addParticipantToReceiptUseCase(
+                    participant = participant,
+                    groupId = it,
+                    receiptId = receiptId,
+                    quantity = quantity
+                )
+                fetchData(it)
+            }
+
+
         }
     }
 

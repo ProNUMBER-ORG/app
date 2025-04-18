@@ -1,5 +1,6 @@
 plugins {
     id("java-library")
+    alias(libs.plugins.kotlinAndroidKsp)
     alias(libs.plugins.jetbrains.kotlin.jvm)
 }
 java {
@@ -13,5 +14,7 @@ kotlin {
 }
 dependencies {
     implementation(libs.dagger)
+    ksp(libs.dagger.compiler)
+
     implementation(libs.kotlinx.coroutines.core)
 }
