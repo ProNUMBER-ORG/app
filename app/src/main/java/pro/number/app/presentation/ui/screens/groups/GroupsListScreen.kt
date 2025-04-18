@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CornerSize
@@ -31,10 +32,13 @@ import androidx.compose.ui.unit.sp
 import pro.number.app.presentation.ViewModelFactory
 import pro.number.app.presentation.ui.components.GroupItem
 import pro.number.app.presentation.ui.theme.AppTheme
+import pro.number.domain.model.Group
 
 @Composable
 fun GroupsListScreen(
-    viewModelFactory: ViewModelFactory
+    viewModelFactory: ViewModelFactory,
+    onAddGroupClick: () -> Unit,
+    onGroupClick: (groupId: Int) -> Unit
 ) {
     val viewModel = remember(Unit) {
         viewModelFactory.create(GroupsViewModel::class.java)
@@ -44,7 +48,9 @@ fun GroupsListScreen(
     Scaffold(
         topBar = {
             Header(
-                modifier = Modifier.padding(all = 20.dp)
+                modifier = Modifier
+                    .padding(all = 20.dp)
+                    .statusBarsPadding()
             )
         },
     ) {
@@ -61,7 +67,7 @@ fun GroupsListScreen(
                 ),
                 contentPadding = PaddingValues(horizontal = 30.dp, vertical = 25.dp),
                 shape = ShapeDefaults.Medium.copy(all = CornerSize(20.dp)),
-                onClick = { TODO("Клик на кнопку добавления новой группы") }
+                onClick = onAddGroupClick
             ) {
                 Icon(
                     imageVector = Icons.Default.Add,
@@ -83,22 +89,26 @@ fun GroupsListScreen(
                         tips = it.tips,
                         waiter = it.waiter,
                         total = it.total
-                    ) { TODO("Клик на кнопку детальной информации о группе") }
+                    ) {
+                        onGroupClick(it.id)
+                    }
                 }
             }
         }
     }
 }
 
-@Preview
+/*@Preview
 @Composable
 private fun PreviewGroupsListScreen() {
     AppTheme {
         GroupsListScreen(
-            ViewModelFactory.createForPreview(GroupsViewModel())
+            ViewModelFactory.createForPreview(GroupsViewModel()),
+            onAddGroupClick = { },
+            onGroupClick = {  }
         )
     }
-}
+}*/
 
 @Composable
 private fun Header(

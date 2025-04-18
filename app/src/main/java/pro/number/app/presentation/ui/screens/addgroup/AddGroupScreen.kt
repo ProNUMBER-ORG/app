@@ -18,6 +18,7 @@ import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.input.TextFieldState
+import androidx.compose.foundation.text.input.rememberTextFieldState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AddCircle
 import androidx.compose.material.icons.filled.Search
@@ -27,6 +28,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SearchBar
 import androidx.compose.material3.SearchBarDefaults
@@ -36,7 +38,10 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -47,22 +52,47 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.serialization.generateRouteWithArgs
 import pro.number.app.R
 import pro.number.app.presentation.ViewModelFactory
 import pro.number.app.presentation.ui.components.Header
 import pro.number.app.presentation.ui.theme.AppTheme
 import pro.number.domain.model.Participant
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddGroupScreen(
     viewModelFactory: ViewModelFactory,
+    onTakePhotoClickListener: () -> Unit,
+    onPickFromGalleryClickListener: () -> Unit,
+    onContinueClickListener: (groupId: Int) -> Unit,
     onBackClickListener: () -> Unit
 ) {
     val viewModel = remember(Unit) {
         viewModelFactory.create(AddGroupViewModel::class.java)
     }
 
+    var isBottomSheetIsVisible by remember { mutableStateOf(false) }
+
     val participants = viewModel.participants.collectAsState()
+
+    if (isBottomSheetIsVisible) {
+        ModalBottomSheet(
+            onDismissRequest = { isBottomSheetIsVisible = false }
+        ) {
+            val textFieldState = rememberTextFieldState()
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                GroupSearchBar(
+                    textFieldState = textFieldState,
+                    onSearch = {
+
+                    }
+                )
+            }
+        }
+    }
 
     Scaffold(
         topBar = {
@@ -79,7 +109,7 @@ fun AddGroupScreen(
                 .padding(horizontal = 25.dp)
         ) {
             TextButton(
-                onClick = { TODO("Клик на кнопку для добавления участников") }
+                onClick = { isBottomSheetIsVisible = !isBottomSheetIsVisible }
             ) {
                 Icon(
                     imageVector = Icons.Filled.AddCircle,
@@ -104,7 +134,9 @@ fun AddGroupScreen(
                 ParticipantChipsGrid(
                     modifier = Modifier.fillMaxSize(),
                     participants = participants.value,
-                    onLongClick = { TODO("Долгий клик на участника группы") }
+                    onLongClick = {
+                        viewModel.removeParticipantById(it.id)
+                    }
                 )
             }
 
@@ -134,7 +166,7 @@ fun AddGroupScreen(
                             fontWeight = FontWeight.Bold
                         )
                         HorizontalDivider(modifier = Modifier.padding(top = 16.dp))
-                        TextButton(onClick = { TODO("Клик на кнопку сделать фото") }) {
+                        TextButton(onClick = onTakePhotoClickListener) {
                             Text(
                                 text = "Сделать фото",
                                 fontSize = 17.sp,
@@ -143,7 +175,7 @@ fun AddGroupScreen(
                             )
                         }
                         HorizontalDivider()
-                        TextButton(onClick = { TODO("Клик на кнопку выбрать из галереи") }) {
+                        TextButton(onClick = onPickFromGalleryClickListener) {
                             Text(
                                 text = "Выбрать из галереи",
                                 fontSize = 17.sp,
@@ -156,7 +188,9 @@ fun AddGroupScreen(
             }
 
             Button(
-                onClick = { TODO("Кнопка далее") },
+                onClick = {
+//                    onContinueClickListener(1)
+                },
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(bottom = 62.dp),
@@ -207,7 +241,13 @@ fun GroupSearchBar(
 @Composable
 private fun AddGroupScreenPreview() {
     AppTheme {
-        AddGroupScreen(ViewModelFactory.createForPreview(AddGroupViewModel())) { }
+        AddGroupScreen(
+            ViewModelFactory.createForPreview(AddGroupViewModel()),
+            onTakePhotoClickListener = { },
+            onPickFromGalleryClickListener = { },
+            onContinueClickListener = { },
+            onBackClickListener = { }
+        )
     }
 }
 

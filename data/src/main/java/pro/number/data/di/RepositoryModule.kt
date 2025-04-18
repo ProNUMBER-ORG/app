@@ -13,6 +13,7 @@ internal interface RepositoryModule {
     @Binds
     fun bindGroupRepository(groupRepository: GroupRepositoryImpl) : GroupRepository
 
+    @Binds
     fun bindReceiptRepository(repository: ReceiptRepositoryImpl): ReceiptRepository
 
 }

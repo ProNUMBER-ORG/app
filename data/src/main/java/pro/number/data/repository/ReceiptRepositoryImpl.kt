@@ -1,13 +1,12 @@
 package pro.number.data.repository
 
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flowOf
 import pro.number.domain.model.Participant
-import pro.number.domain.model.ParticipantWithQuantity
 import pro.number.domain.model.ReceiptItem
 import pro.number.domain.repository.ReceiptRepository
+import javax.inject.Inject
 
-class ReceiptRepositoryImpl : ReceiptRepository{
+class ReceiptRepositoryImpl @Inject constructor() : ReceiptRepository{
     override suspend fun getReceipts(groupId: Int): Flow<List<ReceiptItem>> {
         TODO()
     }
