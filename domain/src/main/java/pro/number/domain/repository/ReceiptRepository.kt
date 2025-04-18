@@ -1,15 +1,25 @@
 package pro.number.domain.repository
 
+import kotlinx.coroutines.flow.Flow
+import pro.number.domain.model.Participant
 import pro.number.domain.model.ReceiptItem
 
 interface ReceiptRepository {
 
-    suspend fun getReceipts(): List<ReceiptItem>
+    suspend fun getReceipts(groupId: Int): Flow<List<ReceiptItem>>
 
-    suspend fun getReceiptById(id: Int): ReceiptItem
+    suspend fun getReceiptById(id: Int): Flow<ReceiptItem>
 
-    suspend fun addReceipt(receipt: ReceiptItem)
+    suspend fun addReceipt(groupId: Int, receipt: ReceiptItem)
 
     suspend fun deleteReceiptById(id: Int)
+
+    suspend fun addParticipantToReceipt(receiptId: Int, participant: Participant, quantity: Int)
+
+    suspend fun updateParticipantQuantity(participantId: Int, receiptId: Int, quantity: Int)
+
+    suspend fun deleteParticipantFromReceiptItem(participantId: Int, receiptId: Int)
+
+    suspend fun getParticipantsByGroupId(groupId: Int): Flow<List<Participant>>
 
 }
