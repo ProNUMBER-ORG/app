@@ -19,5 +19,5 @@ data class GetBillResultDto(
     )
 }
 
-data class AdditionalDto(val name: String, val cost: Int)
+data class AdditionalDto(val name: String, val cost: Float)
 data class ErrorDto(val reason: String)

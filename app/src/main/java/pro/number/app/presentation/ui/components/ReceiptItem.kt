@@ -49,7 +49,7 @@ import pro.number.domain.model.ParticipantWithQuantity
 fun ReceiptItem(
     modifier: Modifier = Modifier,
     productName: String,
-    totalPrice: Int,
+    totalPrice: Float,
     quantity: Int,
     participants: List<ParticipantWithQuantity>,
     availableParticipants: List<Participant>,
@@ -57,7 +57,7 @@ fun ReceiptItem(
     onQuantityChange: (participant: Participant, quantity: Int) -> Unit,
     onDeleteClick: (Participant) -> Unit
 ) {
-    var expanded by remember { mutableStateOf(true) }
+    var expanded by remember { mutableStateOf(false) }
     var isDialogVisible by remember { mutableStateOf(false) }
 
     val remainingCount = quantity - participants.sumOf { it.quantity }
@@ -310,7 +310,7 @@ private fun PreviewReceiptItem() {
         ReceiptItem(
             productName = "Салат ‘Каприз’",
             quantity = 10,
-            totalPrice = 1500,
+            totalPrice = 1500f,
             participants = listOf(
                 ParticipantWithQuantity(Participant(1, "Иван Морозов"), 4),
                 ParticipantWithQuantity(Participant(2, "Вася Никитин"), 5)

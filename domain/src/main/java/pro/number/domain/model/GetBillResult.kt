@@ -8,5 +8,5 @@ data class GetBillResult(
     val error: Any
 )
 
-data class Additional(val item: String, val cost: Int)
+data class Additional(val item: String, val cost: Float)
 data class Error(val reason: String)

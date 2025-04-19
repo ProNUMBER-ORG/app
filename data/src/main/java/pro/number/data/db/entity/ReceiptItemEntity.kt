@@ -29,7 +29,7 @@ data class ReceiptItemEntity(
     @ColumnInfo(name = "product_name")
     val productName: String,
     @ColumnInfo(name = "price")
-    val price: Int,
+    val price: Float,
     @ColumnInfo(name = "quantity")
     val quantity: Int
 ) {

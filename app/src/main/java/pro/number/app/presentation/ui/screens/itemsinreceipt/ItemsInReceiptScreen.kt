@@ -50,6 +50,7 @@ fun ItemsInReceiptScreen(
         ) {
             items(receiptItems.value) { receipt ->
                 ReceiptItem(
+                    modifier = Modifier.padding(vertical = 5.dp),
                     productName = receipt.productName,
                     totalPrice = receipt.price,
                     quantity = receipt.quantity,
