@@ -1,5 +1,6 @@
 package pro.number.app.presentation.ui.screens.addgroup
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.gestures.detectTapGestures
@@ -37,6 +38,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -55,6 +57,7 @@ import androidx.compose.ui.unit.sp
 import pro.number.app.R
 import pro.number.app.presentation.ViewModelFactory
 import pro.number.app.presentation.ui.components.Header
+import pro.number.app.presentation.ui.navigation.MakeCheckPhoto
 import pro.number.app.presentation.ui.theme.AppTheme
 import pro.number.domain.model.Participant
 
@@ -62,6 +65,7 @@ import pro.number.domain.model.Participant
 @Composable
 fun AddGroupScreen(
     groupId: Long,
+    imagePath: State<String?>,
     viewModelFactory: ViewModelFactory,
     onTakePhotoClickListener: () -> Unit,
     onPickFromGalleryClickListener: () -> Unit,
@@ -71,9 +75,6 @@ fun AddGroupScreen(
     val viewModel = remember(Unit) {
         viewModelFactory.create(AddGroupViewModel::class.java)
     }
-
-    var isPhotoLoaded by remember { mutableStateOf(false) }
-
     var isBottomSheetIsVisible by remember { mutableStateOf(false) }
 
     val participants = viewModel.participants.collectAsState()
@@ -168,7 +169,9 @@ fun AddGroupScreen(
                             fontWeight = FontWeight.Bold
                         )
                         HorizontalDivider(modifier = Modifier.padding(top = 16.dp))
-                        TextButton(onClick = onTakePhotoClickListener) {
+                        TextButton(onClick = {
+                            onTakePhotoClickListener()
+                        }) {
                             Text(
                                 text = "Сделать фото",
                                 fontSize = 17.sp,
@@ -190,13 +193,13 @@ fun AddGroupScreen(
             }
 
             Button(
-                onClick = { onContinueClickListener(groupId, "") },
+                onClick = { imagePath.value?.let { onContinueClickListener(groupId, it) } },
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(bottom = 62.dp),
                 colors = ButtonDefaults.buttonColors()
                     .copy(containerColor = MaterialTheme.colorScheme.tertiary),
-                enabled = isPhotoLoaded
+                enabled = imagePath.value != null
             ) {
                 Text(text = "Далее", fontSize = 16.sp)
             }
@@ -238,12 +241,14 @@ fun GroupSearchBar(
     }
 }
 
+@SuppressLint("UnrememberedMutableState")
 @Preview
 @Composable
 private fun AddGroupScreenPreview() {
     AppTheme {
         AddGroupScreen(
             groupId = 1L,
+            imagePath = mutableStateOf<String?>(null),
             ViewModelFactory.createForPreview(AddGroupViewModel()),
             onTakePhotoClickListener = { },
             onPickFromGalleryClickListener = { },
