@@ -1,7 +1,6 @@
 package pro.number.data.network.dto
 
 import pro.number.domain.model.Additional
-import pro.number.domain.model.Error
 import pro.number.domain.model.GetBillResult
 
 data class GetBillResultDto(
@@ -9,16 +8,16 @@ data class GetBillResultDto(
     val status: Int,
     val link: String,
     val additional: List<AdditionalDto>,
-    val error: ErrorDto
+    val error: Any
 ) {
     fun toGetBillResult() = GetBillResult(
         id = id,
         status = status,
         link = link,
-        additional = additional.map { Additional(it.item, it.cost) },
-        error = Error(error.reason)
+        additional = additional.map { Additional(it.name, it.cost) },
+        error = error
     )
 }
 
-data class AdditionalDto(val item: String, val cost: Int)
+data class AdditionalDto(val name: String, val cost: Int)
 data class ErrorDto(val reason: String)

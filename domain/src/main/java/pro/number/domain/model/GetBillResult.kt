@@ -5,7 +5,7 @@ data class GetBillResult(
     val status: Int,
     val link: String,
     val additional: List<Additional>,
-    val error: Error
+    val error: Any
 )
 
 data class Additional(val item: String, val cost: Int)

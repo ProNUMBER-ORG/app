@@ -1,5 +1,6 @@
 package pro.number.app.presentation.ui.screens.itemsinreceipt
 
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -43,6 +44,7 @@ fun ItemsInReceiptScreen(
     ){
         LazyColumn(
             modifier = Modifier
+                .fillMaxSize()
                 .padding(it)
                 .padding(horizontal = 25.dp)
         ) {
@@ -54,15 +56,15 @@ fun ItemsInReceiptScreen(
                     participants = receipt.participants,
                     availableParticipants = availableParticipants.value,
                     onAddParticipantClick = {
-                        viewModel.addParticipantToReceipt(it, receipt.id)
+                        viewModel.addParticipantToReceipt(it, receipt.id ?: 0)
                     },
                     onQuantityChange = { participant, quantity ->
                         viewModel.updateQuantity(
-                            participant.id, receipt.id, quantity
+                            participant.id, receipt.id ?: 0, quantity
                         )
                     },
                     onDeleteClick = {
-                        viewModel.deleteParticipant(it.id, receipt.id)
+                        viewModel.deleteParticipant(it.id, receipt.id ?: 0)
                     })
             }
         }

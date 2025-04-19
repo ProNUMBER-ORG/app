@@ -23,7 +23,7 @@ import pro.number.domain.model.ReceiptItem
 data class ReceiptItemEntity(
     @ColumnInfo("id")
     @PrimaryKey(autoGenerate = true)
-    val id: Int,
+    val id: Int? = null,
     @ColumnInfo(name = "group_id")
     val groupId: Long,
     @ColumnInfo(name = "product_name")

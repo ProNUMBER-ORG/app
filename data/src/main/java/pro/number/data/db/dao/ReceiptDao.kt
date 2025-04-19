@@ -10,13 +10,13 @@ import pro.number.data.db.entity.ReceiptItemEntity
 @Dao
 interface ReceiptDao {
 
-    @Query("SELECT * FROM receipt_items WHERE id = :groupId")
+    @Query("SELECT * FROM receipt_items WHERE group_id = :groupId")
     fun getReceiptsByGroupId(groupId: Long): Flow<List<ReceiptItemEntity>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun addReceiptItem(receiptItem: ReceiptItemEntity)
+    suspend fun addReceiptItem(receiptItem: ReceiptItemEntity)
 
     @Query("DELETE FROM receipt_items WHERE id = :receiptItemId")
-    fun deleteReceiptItemById(receiptItemId: Int)
+    suspend fun deleteReceiptItemById(receiptItemId: Int)
 
 }
