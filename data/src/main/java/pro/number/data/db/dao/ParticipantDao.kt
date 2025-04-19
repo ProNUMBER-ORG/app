@@ -11,10 +11,10 @@ import pro.number.data.db.entity.ParticipantEntity
 interface ParticipantDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun addParticipant(participantEntity: ParticipantEntity)
+   suspend fun addParticipantInGroup(participantEntity: ParticipantEntity)
 
     @Query("DELETE FROM participants WHERE id = :participantId")
-    fun deleteParticipantById(participantId: Long)
+    suspend fun deleteParticipantById(participantId: Int)
 
     @Query("SELECT * FROM participants WHERE group_id = :groupId")
     fun getParticipantsByGroupId(groupId: Long): Flow<List<ParticipantEntity>>

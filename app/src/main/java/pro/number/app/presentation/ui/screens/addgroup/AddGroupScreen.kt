@@ -1,6 +1,5 @@
 package pro.number.app.presentation.ui.screens.addgroup
 
-import android.annotation.SuppressLint
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.gestures.detectTapGestures
@@ -38,6 +37,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -57,7 +57,6 @@ import androidx.compose.ui.unit.sp
 import pro.number.app.R
 import pro.number.app.presentation.ViewModelFactory
 import pro.number.app.presentation.ui.components.Header
-import pro.number.app.presentation.ui.navigation.MakeCheckPhoto
 import pro.number.app.presentation.ui.theme.AppTheme
 import pro.number.domain.model.Participant
 
@@ -79,6 +78,10 @@ fun AddGroupScreen(
 
     val participants = viewModel.participants.collectAsState()
 
+    LaunchedEffect(Unit) {
+        viewModel.getParticipantsByGroupId(groupId)
+    }
+
     if (isBottomSheetIsVisible) {
         ModalBottomSheet(
             onDismissRequest = { isBottomSheetIsVisible = false }
@@ -88,11 +91,24 @@ fun AddGroupScreen(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 GroupSearchBar(
+                    modifier = Modifier.padding(horizontal = 25.dp),
                     textFieldState = textFieldState,
-                    onSearch = {
-
-                    }
+                    onSearch = { }
                 )
+                Button(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 15.dp, horizontal = 25.dp),
+                    onClick = {
+                        val name = textFieldState.text.toString()
+                        if (name.isNotEmpty()) {
+                            viewModel.addParticipant(name, groupId)
+                            isBottomSheetIsVisible = false
+                        }
+                    }
+                ) {
+                    Text(text = "Добавить участника")
+                }
             }
         }
     }
@@ -216,8 +232,7 @@ fun GroupSearchBar(
 ) {
     SearchBar(
         modifier = modifier
-            .fillMaxWidth()
-            .padding(horizontal = 25.dp),
+            .fillMaxWidth(),
         inputField = {
             SearchBarDefaults.InputField(
                 leadingIcon = {
@@ -238,23 +253,6 @@ fun GroupSearchBar(
         expanded = false,
         onExpandedChange = { },
     ) {
-    }
-}
-
-@SuppressLint("UnrememberedMutableState")
-@Preview
-@Composable
-private fun AddGroupScreenPreview() {
-    AppTheme {
-        AddGroupScreen(
-            groupId = 1L,
-            imagePath = mutableStateOf<String?>(null),
-            ViewModelFactory.createForPreview(AddGroupViewModel()),
-            onTakePhotoClickListener = { },
-            onPickFromGalleryClickListener = { },
-            onContinueClickListener = { _, _ -> },
-            onBackClickListener = { }
-        )
     }
 }
 
