@@ -127,6 +127,13 @@ fun AppNavHost(
             ItemsInReceiptScreen(
                 viewModelFactory = viewModelFactory,
                 groupId = groupId,
+                onToMainMenuClick = {
+                    navHostController.navigate(route = GroupsList) {
+                        popUpTo(0) {
+                            inclusive = true
+                        }
+                    }
+                },
                 onBackClickListener = { navHostController.popBackStack() }
             )
         }
