@@ -14,10 +14,10 @@ internal interface GroupDao {
     suspend fun addGroup(groupEntity: GroupEntity): Long
 
     @Query("SELECT * FROM `groups`")
-    fun getGroups() : Flow<List<GroupEntity>>
+    fun getGroups(): Flow<List<GroupEntity>>
 
     @Query("SELECT * FROM `groups` WHERE id = :id LIMIT 1")
-    fun getGroup(id: Long) : Flow<GroupEntity>
+    fun getGroup(id: Long): Flow<GroupEntity>
 
     @Query("DELETE FROM `groups` WHERE id = :id")
     suspend fun deleteGroup(id: Long)

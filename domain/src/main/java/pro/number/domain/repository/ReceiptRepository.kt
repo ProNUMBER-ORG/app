@@ -12,7 +12,7 @@ interface ReceiptRepository {
 
     suspend fun deleteReceiptById(id: Int)
 
-    suspend fun addParticipantToReceipt(groupId: Long, receiptId: Int, participant: Participant, quantity: Int)
+    suspend fun addParticipantToReceipt(receiptId: Int, participant: Participant, quantity: Int)
 
     suspend fun updateParticipantQuantity(participantId: Int, receiptId: Int, quantity: Int)
 

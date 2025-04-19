@@ -2,6 +2,7 @@ package pro.number.domain.repository
 
 import pro.number.domain.model.Group
 import kotlinx.coroutines.flow.Flow
+import pro.number.domain.model.Participant
 
 interface GroupRepository {
 
@@ -12,5 +13,9 @@ interface GroupRepository {
     suspend fun addGroup(group: Group): Long
 
     suspend fun deleteGroupById(id: Long)
+
+    suspend fun addParticipantInGroup(participant: Participant, groupId: Long)
+
+    suspend fun deleteParticipantFromGroup(participantId: Int)
 
 }

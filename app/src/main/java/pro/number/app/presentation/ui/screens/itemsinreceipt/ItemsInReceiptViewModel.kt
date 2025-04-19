@@ -59,14 +59,11 @@ class ItemsInReceiptViewModel @Inject constructor(
             currentGroupId?.let {
                 addParticipantToReceiptUseCase(
                     participant = participant,
-                    groupId = it,
                     receiptId = receiptId,
                     quantity = quantity
                 )
                 fetchData(it)
             }
-
-
         }
     }
 

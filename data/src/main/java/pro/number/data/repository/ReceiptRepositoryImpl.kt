@@ -46,12 +46,11 @@ class ReceiptRepositoryImpl @Inject constructor(
     }
 
     override suspend fun addParticipantToReceipt(
-        groupId: Long,
         receiptId: Int,
         participant: Participant,
         quantity: Int
     ) {
-        participantDao.addParticipant(ParticipantEntity.fromParticipant(participant, groupId))
+//        participantDao.addParticipantInGroup(ParticipantEntity.fromParticipant(participant, groupId))
         receiptParticipantDao.addQuantity(
             ReceiptParticipantEntity(
                 receiptId,

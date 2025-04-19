@@ -10,12 +10,12 @@ import pro.number.data.db.entity.ReceiptParticipantEntity
 interface ReceiptParticipantDao {
 
     @Query("SELECT quantity FROM receipt_participant WHERE receipt_item_id = :receiptId AND participant_id = :participantId")
-    fun getQuantity(receiptId: Int, participantId: Int): Int
+    suspend fun getQuantity(receiptId: Int, participantId: Int): Int
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun addQuantity(receiptParticipantEntity: ReceiptParticipantEntity)
+    suspend fun addQuantity(receiptParticipantEntity: ReceiptParticipantEntity)
 
     @Query("DELETE FROM receipt_participant WHERE receipt_item_id = :receiptId AND participant_id = :participantId")
-    fun delete(receiptId: Int, participantId: Int)
+    suspend fun delete(receiptId: Int, participantId: Int)
 
 }
