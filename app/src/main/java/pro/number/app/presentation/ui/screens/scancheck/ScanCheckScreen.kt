@@ -18,12 +18,14 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.ShapeDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -55,51 +57,66 @@ fun ScanCheckScreen(
         viewModelFactory.create(ScanCheckScreenViewModel::class.java)
     }
 
+    val status = viewModel.statusFlow.collectAsState()
+
     Scaffold(
         topBar = {
             Header(title = "Сканирование", onBackClickListener = onBackClick)
         }
     ) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(it)
-                .padding(horizontal = 50.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.SpaceAround
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.Center
         ) {
-            Button(
-                modifier = Modifier.fillMaxWidth(),
-                colors = ButtonDefaults.buttonColors().copy(
-                    containerColor = MaterialTheme.colorScheme.surfaceContainerHighest,
-                    contentColor = MaterialTheme.colorScheme.onSurface
-                ),
-                contentPadding = PaddingValues(horizontal = 30.dp, vertical = 25.dp),
-                shape = ShapeDefaults.Medium.copy(all = CornerSize(20.dp)),
-                onClick = {
-                    addNewCheck(imageName)
-                }
-            ) {
-                Icon(
-                    imageVector = Icons.Default.Add,
-                    contentDescription = null
-                )
-                Text(
-                    text = "Добавить новый чек",
-                    fontSize = 15.sp,
-                    fontWeight = FontWeight.Bold
-                )
+            if (status.value == Status.InProgress) {
+                CircularProgressIndicator()
             }
-            ReceiptCard(imageName = imageName, needRotate = needRotate)
-            Button(
-                onClick = { onContinueClick(groupId) },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(bottom = 62.dp),
-                colors = ButtonDefaults.buttonColors()
-                    .copy(containerColor = MaterialTheme.colorScheme.tertiary)
-            ) {
-                Text(text = "Далее", fontSize = 16.sp)
+            else if (status.value != null) {
+                onContinueClick(groupId)
+            }
+            else {
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(it)
+                        .padding(horizontal = 50.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.SpaceAround
+                ) {
+                    Button(
+                        modifier = Modifier.fillMaxWidth(),
+                        colors = ButtonDefaults.buttonColors().copy(
+                            containerColor = MaterialTheme.colorScheme.surfaceContainerHighest,
+                            contentColor = MaterialTheme.colorScheme.onSurface
+                        ),
+                        contentPadding = PaddingValues(horizontal = 30.dp, vertical = 25.dp),
+                        shape = ShapeDefaults.Medium.copy(all = CornerSize(20.dp)),
+                        onClick = {
+                            addNewCheck(imageName)
+                        }
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Add,
+                            contentDescription = null
+                        )
+                        Text(
+                            text = "Добавить новый чек",
+                            fontSize = 15.sp,
+                            fontWeight = FontWeight.Bold
+                        )
+                    }
+                    ReceiptCard(imageName = imageName, needRotate = needRotate)
+                    Button(
+                        onClick = { viewModel.uploadImage(imageName, groupId) },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(bottom = 62.dp),
+                        colors = ButtonDefaults.buttonColors()
+                            .copy(containerColor = MaterialTheme.colorScheme.tertiary)
+                    ) {
+                        Text(text = "Далее", fontSize = 16.sp)
+                    }
+                }
             }
         }
     }

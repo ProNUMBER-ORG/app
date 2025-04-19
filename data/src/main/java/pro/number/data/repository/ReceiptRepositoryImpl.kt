@@ -23,11 +23,11 @@ class ReceiptRepositoryImpl @Inject constructor(
     override suspend fun getReceipts(groupId: Long): Flow<List<ReceiptItem>> =
         receiptDao.getReceiptsByGroupId(groupId).map { receiptEntities ->
             receiptEntities.map { receiptItem ->
-                val participants = participantDao.getParticipantsByReceiptItemId(receiptItem.id)
+                val participants = participantDao.getParticipantsByReceiptItemId(receiptItem.id ?: 0)
                     .map { participantEntities ->
                         participantEntities.map { participantEntity ->
                             val quantity = receiptParticipantDao.getQuantity(
-                                receiptItem.id,
+                                receiptItem.id ?: 0,
                                 participantEntity.id
                             )
                             ParticipantWithQuantity(participantEntity.toParticipant(), quantity)
