@@ -6,24 +6,20 @@ import androidx.room.PrimaryKey
 import pro.number.domain.model.Group
 
 @Entity(tableName = "groups")
-internal data class GroupEntity(
+data class GroupEntity(
     @ColumnInfo(name = "id")
     @PrimaryKey(autoGenerate = true) val id: Long = 0,
     @ColumnInfo(name = "name")
     val name: String,
     @ColumnInfo(name = "date_of_the_event")
     val dateOfTheEvent: String,
-    @ColumnInfo(name = "items_count")
-    val itemsCount: Int,
     @ColumnInfo(name = "tips")
     val tips: Byte,
     @ColumnInfo(name = "waiter")
     val waiter: String,
-    @ColumnInfo(name = "total")
-    val total: Int
 ) {
 
-    fun toGroup(): Group {
+    fun toGroup(itemsCount: Int, total: Float): Group {
         return Group(
             id = id,
             name = name,
@@ -41,10 +37,8 @@ internal data class GroupEntity(
                 id = group.id,
                 name = group.name,
                 dateOfTheEvent = group.dateOfTheEvent,
-                itemsCount = group.itemsCount,
                 tips = group.tips,
-                waiter = group.waiter,
-                total = group.total
+                waiter = group.waiter
             )
         }
     }

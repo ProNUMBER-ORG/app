@@ -27,7 +27,7 @@ fun GroupItem(
     itemsCount: Int,
     tips: Byte,
     waiter: String,
-    total: Int,
+    total: Float,
     onDetailsClickListener: () -> Unit
 ) {
     Surface(
@@ -100,7 +100,7 @@ private fun PreviewGroupItem() {
             itemsCount = 15,
             tips = 10,
             waiter = "Иванов И.И.",
-            total = 1500
+            total = 1500f
         ) {}
     }
 }
